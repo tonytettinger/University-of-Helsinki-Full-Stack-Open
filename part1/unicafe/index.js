@@ -11,7 +11,7 @@ const App = () => {
     <div>
       <Title text="Give feedback" />
 
-      <FeedbackButton handleClick={() => setGood(good+1)}feedback="good" />
+      <FeedbackButton handleClick={() => setGood(good+1)} feedback="good" />
       <FeedbackButton handleClick={() => setNeutral(neutral+1)} feedback="neutral"/>
       <FeedbackButton handleClick={() => setBad(bad+1)} feedback="bad" />
 
