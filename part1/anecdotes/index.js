@@ -44,8 +44,8 @@ const App = (props) => {
       <Title titleText='Anecdote of the day' />
       <Anecdotes anecdotes={anecdotes} selected={selected}/>
       <VoteCount count={count} selected={selected}/>
-      <button onClick={voteAnecdote}>Vote anecdote</button>
-      <button onClick={nextAnecdote}>Next anecdote</button>
+      <Button handleClick={voteAnecdote} text="Vote anecdote" />
+      <Button handleClick={nextAnecdote} text="Next anecdote" />
       <Title titleText='Anecdote with the most votes' />
       <AnecdoteMostVotes max={max} count={count} selected={selected}/>
 
@@ -59,6 +59,14 @@ const Anecdotes = ({anecdotes, selected}) => {
     <div>
       {anecdote}
     </div>
+  )
+}
+
+const Button = ({handleClick, text}) => {
+  return(
+    <button onClick={handleClick}>
+      {text}
+    </button>
   )
 }
 
