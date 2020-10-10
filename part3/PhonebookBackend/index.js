@@ -55,16 +55,16 @@ app.post("/api/persons", (req, res) => {
     number
   });
 
-  let person;
+  const person = {
+    name,
+    number
+  };
   phoneBookEntry.save().then(savedEntry => {
     console.log("SAVED", savedEntry);
-    person = {
-      name: savedEntry.name,
-      number: savedEntry.number
-    };
     console.log("saved person", person);
     res.json(person).end();
   });
+  res.json(person);
 });
 
 const unknownEndpoint = (request, response) => {
