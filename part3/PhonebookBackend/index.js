@@ -1,68 +1,33 @@
+require("dotenv").config();
+
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
 const cors = require("cors");
+const PhonebookEntry = require("./models/phonebookentry");
 
 app.use(cors());
 app.use(express.json());
 app.use(morgan("tiny"));
 app.use(express.static("build"));
 
-let persons = [
-  {
-    name: "Arto Hellas",
-    number: "040-123456",
-    id: 1
-  },
-  {
-    name: "Ada Lovelace",
-    number: "39-44-5323523",
-    id: 2
-  },
-  {
-    name: "Dan Abramov",
-    number: "12-43-234345",
-    id: 3
-  },
-  {
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-    id: 4
-  }
-];
-
-generateId = () => {
-  let length = persons.length;
-  return length ? Math.max(...persons.map(person => person.id)) + 1 : 0;
-};
-
-checkIfPersonExist = name => {
-  return persons.filter(person => person.name == name).length;
-};
-
 app.get("/api/persons", (req, res) => {
-  res.json(persons);
-});
-
-app.get("/info", (req, res) => {
-  const numberOfPeople = persons.length;
-  const date = new Date();
-  const info = `Phonebook has info for ${numberOfPeople} people
-  ${date}`;
-  res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end(info);
+  PhonebookEntry.find({})
+    .then(entries => {
+      res.json(entries);
+    })
+    .catch(error => console.log(error) && res.status(404).end());
 });
 
 app.get("/api/persons/:id", (req, res) => {
   let id = Number(req.params.id);
   console.log("id param", id);
-  person = persons.find(person => person.id === id);
 
-  if (person) {
-    res.json(person);
-  } else {
-    res.status(404).end();
-  }
+  PhonebookEntry.findById(req.params.id)
+    .then(entry => {
+      res.json(entry);
+    })
+    .catch(error => res.status(404).end());
 });
 
 app.delete("/api/persons/:id", (req, res) => {
@@ -85,21 +50,21 @@ app.post("/api/persons", (req, res) => {
     });
   }
 
-  if (checkIfPersonExist(name)) {
-    return res.status(409).json({
-      error: "person already exist in database (name must be unique)"
-    });
-  }
-
-  const person = {
-    id: generateId(),
+  const phoneBookEntry = new PhonebookEntry({
     name,
     number
-  };
+  });
 
-  persons = persons.concat(person);
+  let person;
+  phoneBookEntry.save().then(savedEntry => {
+    console.log("SAVED", savedEntry);
+    person = {
+      name: savedEntry.name,
+      number: savedEntry.number
+    };
 
-  res.json(person);
+    res.json(person);
+  });
 });
 
 const unknownEndpoint = (request, response) => {
