@@ -62,8 +62,8 @@ app.post("/api/persons", (req, res) => {
       name: savedEntry.name,
       number: savedEntry.number
     };
-
-    res.json(person);
+    console.log("saved person", person);
+    res.json(person).end();
   });
 });
 
