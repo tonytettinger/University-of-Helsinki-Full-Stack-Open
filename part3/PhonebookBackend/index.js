@@ -44,7 +44,6 @@ app.delete("/api/persons/:id", (request, response) => {
 
 app.post("/api/persons", (req, res) => {
   const body = req.body;
-  console.log(body);
   const name = body.name;
   const number = body.number;
 
@@ -61,7 +60,7 @@ app.post("/api/persons", (req, res) => {
 
   phoneBookEntry
     .save()
-    .then(savedEntry => savedEntry.toJSON)
+    .then(savedEntry => savedEntry.toJSON())
     .then(savedFormattedEntry => res.json(savedFormattedEntry))
     .catch(error => next(error));
 });
