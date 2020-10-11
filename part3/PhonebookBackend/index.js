@@ -42,7 +42,7 @@ app.delete("/api/persons/:id", (request, response) => {
     .catch(error => next(error));
 });
 
-app.post("/api/persons", (req, res) => {
+app.post("/api/persons", (req, res, next) => {
   const body = req.body;
   const name = body.name;
   const number = body.number;
