@@ -48,8 +48,6 @@ app.post("/api/persons", (req, res) => {
   const name = body.name;
   const number = body.number;
 
-  console.log("body", body);
-
   if (!body.name || !body.number) {
     return res.status(400).json({
       error: "content is missing"
